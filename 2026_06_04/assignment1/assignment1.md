@@ -49,7 +49,7 @@
 
 - 컴퓨터 외부에 연결되어 컴퓨터 내부와 정보를 교환하는 장치
 
-!운영체제_1.png
+![운영체제 사진](운영체제_1.png)
 
 **메인보드와 시스템 버스**
 
@@ -178,6 +178,6 @@ git push --set-upstream origin master (로컬 브랜치 `master`가 GitHub의 'm
 git push
 ```
 
-!commit.png
+![commit 사진](commit.png)
 
-!add_commit_push.png
+![add commit push 사진](add_commit_push.png)
