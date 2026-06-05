@@ -5,24 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c5414aaa-01c1-4345-ad6a-ff0b8249df3c" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/settings.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/src/main/java/org/example/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../1-vending-machine/src/main/java/vending_machine.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../add_commit_push.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../assignment1.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../assignment2.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../commit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../운영체제_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,33 +35,47 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3EfUgrrO0knaXBV19WjGLRvLJaj" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.1-vending-machine [:vending_machine.main()].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/LG/OneDrive/사진/바탕 화면/dev_study/2026_06_04/assignment3",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.1-vending-machine [:vending_machine.main()].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/LG/OneDrive/사진/바탕 화면/dev_study/2026_06_04/assignment3&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="애플리케이션.new_vending">
+    <configuration name="new_vending" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="new_vending" />
+      <module name="1-vending-machine.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="vending_machine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="vending_machine" />
       <module name="1-vending-machine.main" />
@@ -87,6 +85,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="애플리케이션.new_vending" />
         <item itemvalue="애플리케이션.vending_machine" />
       </list>
     </recent_temporary>
