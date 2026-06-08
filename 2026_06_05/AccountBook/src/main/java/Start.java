@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class Start {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
+        AccountBook book = new AccountBookImpl();
+
         while(true){
             // 옵션 출력
             System.out.println("==== 가계부 ====");
