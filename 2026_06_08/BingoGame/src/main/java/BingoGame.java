@@ -7,6 +7,10 @@ public class BingoGame {
     static final int SIZE = 5; // 판 크기
     static final int MAX = 25; // 최대 숫자 범위 제한
 
+    private int[][] board = new int[SIZE][SIZE];
+    private boolean[][] marked = new boolean[SIZE][SIZE];
+    private boolean[] called = new boolean[MAX]; // 이미 부른 숫자를 또 부르지 못하게 하기 위해
+
     // 1. 시작 화면 띄우기
     public void play(){
         System.out.println("===== 빙고 게임 =====");
@@ -83,4 +87,12 @@ public class BingoGame {
 
         return count;
     }
+
+    // 6 - 1. [사용자] 숫자 부르기
+    int playerPick(){
+        while(true){
+
+        }
+    }
+
 }
