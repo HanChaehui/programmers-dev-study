@@ -1,15 +1,18 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
+import java.util.Random;
 
 public class BingoGame {
 
     static final int SIZE = 5; // 판 크기
     static final int MAX = 25; // 최대 숫자 범위 제한
+    static Scanner sc = new Scanner(System.in);
 
     private int[][] board = new int[SIZE][SIZE];
     private boolean[][] marked = new boolean[SIZE][SIZE];
-    private boolean[] called = new boolean[MAX]; // 이미 부른 숫자를 또 부르지 못하게 하기 위해
+    private boolean[] called = new boolean[MAX + 1]; // 이미 부른 숫자를 또 부르지 못하게 하기 위해
 
     // 1. 시작 화면 띄우기
     public void play(){
@@ -91,8 +94,32 @@ public class BingoGame {
     // 6 - 1. [사용자] 숫자 부르기
     int playerPick(){
         while(true){
-
+            System.out.print("부를 숫자 입력 (1~25) > ");
+            int num;
+            try {
+                num = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("숫자만 입력하세요."); continue;
+            }
+            if(num < 1 || num > 25) {
+                System.out.println("1~25 사이로 입력하세요.");
+            }
+            else if(called[num]) {
+                System.out.println("이미 부른 숫자입니다.");
+            }
+            else{
+                return num;
+            }
         }
+    }
+
+    // 6 - 2. [컴퓨터] 난수 생성
+    int computerPick(){
+        int num;
+        do {
+            num = (int) (Math.random() * 24 + 1);
+        } while(called[num]);
+        return num;
     }
 
 }
