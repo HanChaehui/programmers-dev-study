@@ -15,6 +15,7 @@ public class BingoGame {
     private int[][] computerBoard = new int[SIZE][SIZE];
     private boolean[][] playerMarked = new boolean[SIZE][SIZE];
     private boolean[][] computerMarked = new boolean[SIZE][SIZE];
+
     private boolean[] called = new boolean[MAX + 1]; // 이미 부른 숫자를 또 부르지 못하게 하기 위해
 
     // 1. 시작 화면 띄우기
@@ -69,7 +70,7 @@ public class BingoGame {
     // 2. 빙고판 만들기
     public void makeBoard(int[][] board){
         List<Integer> nums = new ArrayList<>();
-        for (int i = 0; i < MAX; i++) nums.add(i);
+        for (int i = 1; i <= MAX; i++) nums.add(i);
         Collections.shuffle(nums); // 랜덤으로 섞기
 
         int idx = 0;
@@ -140,6 +141,7 @@ public class BingoGame {
     // 6 - 1. [사용자] 숫자 부르기
     int playerPick(){
         while(true){
+            System.out.println("\n==사용자 차례==");
             System.out.print("부를 숫자 입력 (1~25) > ");
             int num;
             try {
@@ -154,6 +156,7 @@ public class BingoGame {
                 System.out.println("이미 부른 숫자입니다.");
             }
             else{
+                called[num] = true;
                 return num;
             }
         }
@@ -165,6 +168,9 @@ public class BingoGame {
         do {
             num = (int) (Math.random() * 24 + 1);
         } while(called[num]);
+        System.out.println("\n==컴퓨터 차례==");
+        System.out.printf("컴퓨터가 [%d]를 선택하였습니다.\n", num);
+        called[num] = true;
         return num;
     }
 
