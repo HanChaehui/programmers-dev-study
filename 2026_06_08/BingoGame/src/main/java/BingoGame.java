@@ -6,18 +6,64 @@ import java.util.Random;
 
 public class BingoGame {
 
+    static final int TARGET = 3; // 3줄 먼저 만들면 승리
     static final int SIZE = 5; // 판 크기
     static final int MAX = 25; // 최대 숫자 범위 제한
     static Scanner sc = new Scanner(System.in);
 
-    private int[][] board = new int[SIZE][SIZE];
-    private boolean[][] marked = new boolean[SIZE][SIZE];
+    private int[][] playerBoard = new int[SIZE][SIZE];
+    private int[][] computerBoard = new int[SIZE][SIZE];
+    private boolean[][] playerMarked = new boolean[SIZE][SIZE];
+    private boolean[][] computerMarked = new boolean[SIZE][SIZE];
     private boolean[] called = new boolean[MAX + 1]; // 이미 부른 숫자를 또 부르지 못하게 하기 위해
 
     // 1. 시작 화면 띄우기
     public void play(){
+
         System.out.println("===== 빙고 게임 =====");
         System.out.println("컴퓨터와 번갈아 숫자를 불러 빙고를 완성하세요!");
+        System.out.println("먼저 " + TARGET + "줄을 완성하면 승리!");
+
+        makeBoard(playerBoard);
+        makeBoard(computerBoard);
+
+        int num = 0;
+
+        while(true) {
+
+            // 내 빙고판 출력
+            System.out.println("\n===== 사용자 빙고판 =====");
+            printBoard(playerBoard, playerMarked);
+            // 컴퓨터 빙고판 출력
+            System.out.println("\n===== 컴퓨터 빙고판 =====");
+            printBoard(computerBoard, computerMarked);
+
+            // 내 차례
+            num = playerPick();
+            mark(playerBoard, playerMarked, num);
+            mark(computerBoard, computerMarked, num);
+            if(checkWin(countBingo(playerMarked), countBingo(computerMarked))) {
+                System.out.println("\n===== 사용자 빙고판 =====");
+                printBoard(playerBoard, playerMarked);
+                // 컴퓨터 빙고판 출력
+                System.out.println("\n===== 컴퓨터 빙고판 =====");
+                printBoard(computerBoard, computerMarked);
+                break;
+            }
+
+            // 컴퓨터 차례
+            num = computerPick();
+            mark(playerBoard, playerMarked, num);
+            mark(computerBoard, computerMarked, num);
+            if(checkWin(countBingo(playerMarked), countBingo(computerMarked))) {
+                System.out.println("\n===== 사용자 빙고판 =====");
+                printBoard(playerBoard, playerMarked);
+                // 컴퓨터 빙고판 출력
+                System.out.println("\n===== 컴퓨터 빙고판 =====");
+                printBoard(computerBoard, computerMarked);
+                break;
+            }
+        }
     }
 
     // 2. 빙고판 만들기
@@ -120,6 +166,27 @@ public class BingoGame {
             num = (int) (Math.random() * 24 + 1);
         } while(called[num]);
         return num;
+    }
+
+    // 7. 빙고 완성 확인
+    public boolean checkWin(int playerBingo, int computerBingo){
+        if(playerBingo >= 3 && computerBingo >=3 ) {
+            System.out.println("[무승부] 동시에 빙고 3줄 달성!\n게임을 종료합니다.");
+            return true;
+        }
+        else if(playerBingo >= 3) {
+            System.out.println("[사용자] 빙고 3줄 달성! 축하합니다!\n게임을 종료합니다.");
+            return true;
+        }
+        else if(computerBingo >= 3) {
+            System.out.println("[컴퓨터] 빙고 3줄 달성!\n게임을 종료합니다.");
+            return true;
+        }
+        else {
+            System.out.printf("[사용자] 현재 빙고 %d줄\n", playerBingo);
+            System.out.printf("[컴퓨터] 현재 빙고 %d줄\n", computerBingo);
+            return false;
+        }
     }
 
 }
