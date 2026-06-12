@@ -1,8 +1,8 @@
 public class NormalMember implements Member{
 
-    String name;
-    String email;
-    String phone;
+    private String name;
+    private String email;
+    private String phone;
 
     public NormalMember(String name, String email, String phone){
         this.name = name;
