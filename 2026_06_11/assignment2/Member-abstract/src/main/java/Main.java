@@ -4,6 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("[요금제를 선택하세요]");
         System.out.println("[1]Lite:10 [2]Basic:20 [3]Premium:30");
         int capacity = Integer.parseInt(sc.nextLine());
         MemberManager mm = new MemberManager(capacity * 10);
