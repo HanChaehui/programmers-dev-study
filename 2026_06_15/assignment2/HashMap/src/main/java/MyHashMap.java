@@ -15,7 +15,7 @@ public class MyHashMap {
     int size = 0;
 
     public MyHashMap() {
-        Node[] buckets = new Node[capacity];
+        buckets = new Node[capacity];
     }
 
     public int getIndex(String key){
