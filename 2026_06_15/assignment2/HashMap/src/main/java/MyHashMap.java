@@ -4,7 +4,7 @@ public class MyHashMap {
         String key;
         Integer value;
         Node next;
-        Node(String key, int value){
+        Node(String key, Integer value){
             this.key = key;
             this.value = value;
         }
@@ -35,7 +35,7 @@ public class MyHashMap {
             head = head.next;
         }
         Node node = new Node(key, value);
-        node.next = head;
+        node.next = buckets[index];
         buckets[index] = node;
         size++;
     }
