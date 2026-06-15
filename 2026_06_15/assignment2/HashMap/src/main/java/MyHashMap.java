@@ -100,14 +100,14 @@ public class MyHashMap {
             if (key.equals(node.key)) {
                 if(prev == null){
                     buckets[index] = node.next;
-                    size--;
-                    return node.value;
                 }
-                prev.next = node.next;
+                else {
+                    prev.next = node.next;
+                }
                 size--;
                 return node.value;
             }
-            prev = prev.next;
+            prev = node;
             node = node.next;
         }
         return null;
