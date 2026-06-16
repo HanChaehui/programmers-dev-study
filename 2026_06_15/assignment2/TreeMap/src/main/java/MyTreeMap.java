@@ -20,8 +20,8 @@ public class MyTreeMap {
             size++;
             return new Node(key, value);
         }
-        if(key.compareTo(node.key) < 0) put(node.left, key, value);
-        else if(key.compareTo(node.key) > 0) put(node.right, key, value);
+        if(key.compareTo(node.key) < 0) node.left = put(node.left, key, value);
+        else if(key.compareTo(node.key) > 0) node.right = put(node.right, key, value);
         else node.value = value;
         return node;
     }
