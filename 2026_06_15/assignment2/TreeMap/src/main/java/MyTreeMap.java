@@ -82,20 +82,28 @@ public class MyTreeMap {
         size--;
         return find;
     }
+    // 타켓 노드가 제거 완료 된 루트 노드 찾기 - 서브트리로 재귀
     private Node remove(Node node, String key){
         if(node == null) return null;
-        if(key.compareTo(node.key) < 0) return get(node.left, key);
-        else if(key.compareTo(node.key) > 0) return get(node.right, key);
+        if(key.compareTo(node.key) < 0) node.left = remove(node.left, key);
+        else if(key.compareTo(node.key) > 0) node.right = remove(node.right, key);
+        // 삭제할 노드 발견
+        else{
+            // 왼 or 오 자식이 하나만 있거나
+            // 자식이 아에 없는 경우
+            if(node.left == null) return node.right;
+            if(node.right == null) return node.left;
 
-        if (node.left == null)
-        if(node.left != null && node.right != null){
-            Node succ = root;
-            while(succ.left != null){
-                succ = succ.left;
-            }
+            // 왼,오 자식이 모두 있는 경우
+            Node succ = node;
+            // 오른쪽 서브 트리에서 가장 작은 노드 찾기 (후계자)
+            while(succ.left != null) succ = succ.left;
+            // 삭제할 노드에 후계자 노드 위임
             node.key = succ.key;
             node.value = succ.value;
-            remove(succ, succ.key);
+            // 삭제할 노드의 오른쪽 서브 트리 남아있는 (구)후계자 삭제
+            node.right = remove(node.right, succ.key);
         }
+        return node;
     }
 }
