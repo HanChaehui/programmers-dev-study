@@ -15,11 +15,16 @@ public class Main {
         System.out.println(treemap.firstKey()); // a
         System.out.println(treemap.lastKey()); // g
         System.out.println(treemap.remove("a")); // 1
+        System.out.println(treemap.get("a")); // null
         System.out.println(treemap.size()); // 6
         treemap.printSorted();
         System.out.println(treemap.remove("a")); // null
         treemap.put("a", 100);
         System.out.println(treemap.size()); // 7
         treemap.printSorted();
+        treemap.put("a", 200);
+        System.out.println(treemap.size()); // 7
+        treemap.printSorted();
+
     }
 }

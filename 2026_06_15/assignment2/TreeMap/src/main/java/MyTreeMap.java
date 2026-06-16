@@ -45,7 +45,7 @@ public class MyTreeMap {
     private void printSorted(Node node){
         if(node == null) return;
         printSorted(node.left);
-        System.out.print(node.key + " ");
+        System.out.println("Key : " + node.key + ", Value : " + node.value);
         printSorted(node.right);
     }
 
