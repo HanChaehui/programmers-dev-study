@@ -7,13 +7,7 @@ public class Start {
 
         while(true){
             // 옵션 출력
-            System.out.println("==== 가계부 ====");
-            System.out.println("1. 내역 추가");
-            System.out.println("2. 내역 조회");
-            System.out.println("3. 전체 삭제");
-            System.out.println("4. 내역 삭제");
-            System.out.println("5. 종료");
-            System.out.println("번호 입력 >");
+            book.printMenu();
             // 번호 입력
             int num = Integer.parseInt(sc.nextLine());
             switch(num){
