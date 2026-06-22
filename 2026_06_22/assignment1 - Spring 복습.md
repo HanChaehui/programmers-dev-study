@@ -299,32 +299,27 @@ DIP - 구체 클래스보다 인터페이스에 의존하라는 원칙
 - **SRP(Single Responsibility Principle) : 단일 책임 원칙**
     
     하나의 클래스는 하나의 책임만 가져야 한다. (관심사의 분리와 비슷)
-    
     클래스가 바뀌는 이유는 하나여야 한다. 
     
 - **OCP(Open-Closed Principle) : 개방 폐쇄 원칙**
     
     확장에는 열려 있고, 변경에는 닫혀 있어야 한다.
-    
     새 기능은 추가할 수 있어야 하지만, 기존 코드는 최대한 고치지 않아야 한다.
     
 - LSP(**Liskov** Substitution Principle) : 리스코프 치환 원칙
     
     자식 클래스는 부모 클래스를 대체할 수 있어야 한다.
-    
     부모 타입으로 쓰던 자리에 자식 객체를 넣어도 프로그램이 정상 동작해야 한다.
     
 - **ISP(Interface Segregation Principle) : 인터페이스 분리 원칙**
     
     클라이언트는 자신이 사용하지 않는 메서드에 의존하면 안 된다.
-    
     큰 인터페이스 하나보다, 작고 명확한 인터페이스 여러 개가 낫다.
     
 - **DIP(Dependency Inversion Principle) : 의존 관계 역전 원칙**
     
     구체 클래스가 아니라 추상화에 의존해야 한다.
-    
-    `new DConnectionMaker()` 같은 구체 클래스에 직접 의존하지 말고, `ConnectionMaker` 같은 인터페이스에 의존하자.
+    `new DConnectionMaker()` 같은 구체 클래스에 직접 의존하지 말고, `ConnectionMaker` 같은 인터페이스에 의존하고, 실제 구현체는 생성자로 주입받자.
     
 
 <aside>
