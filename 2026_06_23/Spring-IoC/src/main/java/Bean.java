@@ -15,4 +15,6 @@ class EthiopiaBean implements Bean{
     public String name() {
         return "에티오피아 원두";
     }
+
 }
+
