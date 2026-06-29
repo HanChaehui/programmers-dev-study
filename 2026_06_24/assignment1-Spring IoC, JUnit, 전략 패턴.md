@@ -923,3 +923,29 @@ UserDAO 내부의 add(), deleteAll() 메서드의 내부로 이동
             jdbcContextWithStatementStrategy( strategy );
         }
     ```
+    ---
+
+2026.06.29 수업 - ch03/ex_3_4
+
+## 7. 컨텍스트 클래스 분리 및 재사용
+
+ex_3_3 문제점
+
+UserDAO의 컨텍스트 메서드인 jdbcContextWithStatementStrategy()는 PreparedStatement를 실행하는 기능을 가진 메서드에서 공유할 수 있다. 즉, 다른 DAO에서도 사용이 가능하다. → '클래스 분리'
+
+(JdbcContext 분리 ← ConnectionMaker와 Strategy 필요)
+
+- UserDAO에서 JdbcContext는 고정된 공통 기능이므로 구체 클래스에 의존
+- SimpleConnectionMaker는 DConnectionMaker, NConnectionMaker 등 구현체를 바꿔 끼울 가능성이 큰 부분이므로 인터페이스로 느슨하게 의존
+- StatementStrategy는 함수형 인터페이스로 선언 해둔 후 UserDAO의 클라이언트(add, deleteAll)에서 원하는 대로 오버라이딩하여 사용 (쿼리문 작성, 값 세팅한 전략 인스턴스를 JdbcContext에 인자로 넘김 → JdbcContext는 DB연결 후 해당 쿼리문을 바탕으로 PreparedStatement 만들어 실행)
+
+```java
+UserDAO → JdbcContext
+: JDBC 공통 흐름을 맡기는 관계. 필수적이고 비교적 고정된 협력 관계라 구체 클래스에 의존.
+
+JdbcContext → StatementStrategy
+: SQL마다 바뀌는 PreparedStatement 생성 로직을 실행 시점에 전달받는 관계라 인터페이스에 의존.
+
+SimpleConnectionMaker
+: DB 연결 방식이 바뀔 수 있으므로 인터페이스로 분리하는 것이 적절.
+```
