@@ -1,0 +1,13 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>로그인</title></head>
+<body>
+<h1>로그인</h1>
+<!-- th:action="@{/login}" 로 컨텍스트 경로까지 맞춰 준다 -->
+<form th:action="@{/login}" method="post">
+    <input type="text" name="username" placeholder="이름을 입력하세요" required>
+    <button type="submit">로그인</button>
+</form>
+</body>
+</html>

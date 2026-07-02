@@ -1,0 +1,29 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>대시보드</title>
+    <style>
+        body.light { background:#ffffff; color:#222222; }
+        body.dark  { background:#222222; color:#eeeeee; }
+        a { color:#3b82f6; }
+    </style>
+</head>
+<!-- 쿠키에서 읽은 theme 값을 body 클래스로 붙인다 -->
+<body th:classappend="${theme}">
+
+<h1 th:text="|환영합니다, ${username} 님!|">환영합니다</h1>
+
+<!-- 마지막 방문: 값이 있을 때만 표시 -->
+<p th:if="${lastVisit != null}" th:text="|마지막 방문: ${lastVisit}|">마지막 방문</p>
+<p th:if="${lastVisit == null}">첫 방문을 환영합니다!</p>
+
+<p>현재 테마: <b th:text="${theme}">light</b></p>
+<!-- @{/theme(mode='dark')} 는 /theme?mode=dark 링크를 만든다 (물음표 뒤 파라미터) -->
+<a th:href="@{/theme(mode='light')}">밝게</a> |
+<a th:href="@{/theme(mode='dark')}">어둡게</a>
+
+<hr>
+<a th:href="@{/logout}">로그아웃</a>
+</body>
+</html>
