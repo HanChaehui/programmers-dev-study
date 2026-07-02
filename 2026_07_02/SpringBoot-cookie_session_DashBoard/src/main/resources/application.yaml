@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: SpringBoot-cookie_session_DashBoard
