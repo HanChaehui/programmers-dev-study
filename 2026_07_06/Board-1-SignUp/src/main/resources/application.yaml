@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: Board-1-SignUp
+  datasource:
+    url: jdbc:mysql://localhost:3306/java_basic?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: sang1411
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

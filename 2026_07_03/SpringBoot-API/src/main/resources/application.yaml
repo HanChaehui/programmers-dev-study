@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: SpringBoot-API
+
+weather:
+  api:
+    key: 6825ce378eb056d0758d6b7c055cfc3e87f29dae4e09a6671ce1cb8b47293deb
