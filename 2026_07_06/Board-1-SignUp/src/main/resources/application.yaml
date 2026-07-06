@@ -2,9 +2,9 @@ spring:
   application:
     name: Board-1-SignUp
   datasource:
-    url: jdbc:mysql://localhost:3306/java_basic?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/java_basic_signup?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: sang1411
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

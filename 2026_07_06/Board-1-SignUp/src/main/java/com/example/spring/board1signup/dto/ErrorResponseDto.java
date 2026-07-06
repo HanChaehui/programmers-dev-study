@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberJoinResponseDto {
-    private String url;
+public class ErrorResponseDto {
+    private int status;
+    private String message;
 }

@@ -16,13 +16,13 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30);
+    @Column(nullable = false, length = 30)
     private String userId;
 
-    @Column(nullable = false, length = 50);
+    @Column(nullable = false, length = 50)
     private String password;
 
-    @Column(nullable = false, length = 10);
+    @Column(nullable = false, length = 10)
     private String userName;
 
 }
