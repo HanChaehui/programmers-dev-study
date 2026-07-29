@@ -183,6 +183,8 @@ spring-boot/security/form-login
 
 사용자가 직접 만든 로그인 페이지에서 아이디/비밀번호를 입력하면, Spring Security 필터가 그 요청을 가로채 인증하고, 성공하면 세션 기반 로그인 상태를 만든다
 
+ 로그인 요청이나 로그아웃 요청은 컨트롤러까지 가지 않고, Security Filter에서 먼저 처리
+
 <aside>
 📌
 
@@ -294,16 +296,18 @@ PasswordEncoder
 📌
 
 폼 로그인
-→ 사용자가 로그인 폼에 입력
+→ 사용자가 로그인 폼에 입력 (요청 파라미터 form-urlencoded 기반)
 → 서버가 세션 생성
 → 브라우저는 JSESSIONID 쿠키만 보냄
 → 서버가 세션을 보고 로그인 상태 확인
+→ stateful
 
 HTTP Basic
 → 로그인 페이지 없음
 → 브라우저 팝업 또는 클라이언트가 인증 정보 입력
 → 매 요청마다 Authorization 헤더에 username:password 정보를 보냄
 → 서버가 매번 헤더를 검증
+→ stateless
 
 realm
 → 보호 영역 이름
@@ -316,3 +320,235 @@ realm
 ex) 최근 방문 시각, 테마 정보, 세션 키 JSESSIONID
 - 세션 : 서버가 사용자별 상태를 저장하는 공간
 ex) username 등을 저장? 로그인 상태?
+
+## 폼 로그인 전체 인증 흐름
+
+<aside>
+📌
+
+1. 사용자가 로그인 폼에 아이디/비밀번호 입력
+2. POST /login 요청
+3. UsernamePasswordAuthenticationFilter가 요청을 가로챔
+4. 요청에서 username/password를 꺼냄
+5. UsernamePasswordAuthenticationToken 생성
+6. AuthenticationManager에게 인증 요청
+7. ProviderManager가 DaoAuthenticationProvider에게 위임
+8. DaoAuthenticationProvider가 UserDetailsService.loadUserByUsername(username) 호출
+9. UserDetailService가 UserRepository로 DB에서 User 조회
+10. 조회한 User를 CustomUserDetails로 감싸서 반환
+11. DaoAuthenticationProvider가 CustomUserDetails.getPassword()로 DB 비밀번호 확인
+12. PasswordEncoder.matches(입력 비밀번호, DB 비밀번호)로 비교
+13. 계정 상태 메서드들 확인
+    - isAccountNonExpired()
+    - isAccountNonLocked()
+    - isCredentialsNonExpired()
+    - isEnabled()
+14. 인증 성공 또는 실패 결정
+</aside>
+
+인증 성공 시
+
+<aside>
+📌
+
+1. Authentication 객체 생성
+2. SecurityContext에 인증 정보 저장
+3. 세션에 SecurityContext 저장
+4. CustomAuthenticationSuccessHandler 실행
+5. userId, userName을 세션에 추가 저장
+6. 로그인 성공 JSON 응답
+7. 이후 요청부터는 세션을 통해 로그인 상태 유지
+</aside>
+
+인증 실패 시
+
+<aside>
+📌
+
+1. AuthenticationException 발생
+2. SecurityContext 저장 안 됨
+3. CustomAuthenticationFailureHandler 실행
+4. 로그인 실패 JSON 응답
+</aside>
+
+예제 Handler 목적
+
+<aside>
+📌
+
+로그인 상태 저장과 검증은 Spring Security가 자동으로 해주고, 
+저 두 핸들러는 성공/실패 후 응답 모양을 커스터마이징하려고 만든 선택 사항 
+(AJAX 대응 JSON 응답)
+
+기본 redirect 방식 → AJAX 로그인에 맞춰 JSON 응답을 내려주는 방식으로 전환
+
+기본 로그인 검증만 필요하다
+→ SuccessHandler / FailureHandler 직접 정의 안 해도 됨
+
+로그인 성공/실패 후 JSON을 내려주고 싶다
+→ 직접 Handler 정의
+
+로그인 성공 후 사용자 정보를 응답에 담고 싶다
+→ SuccessHandler에서 DTO 만들어 JSON 응답
+
+로그인 실패 메시지를 JSON으로 직접 내려주고 싶다
+→ FailureHandler에서 DTO 만들어 JSON 응답
+
+CustomAuthenticationSuccessHandler 실행
+→ 사용자 정보 꺼냄
+→ 세션에 userId, userName 추가 저장
+→ 로그인 성공 JSON 응답
+
+CustomAuthenticationFailureHandler 실행
+→ 로그인 실패 JSON 응답
+→ 401 Unauthorized
+
+ObjectMapper 
+- DTO 객체 → JSON으로 직렬화 해주는 역할
+- DispatcherServelet에 도달하지 않고 UsernamePasswordFilter 단에서 처리하므로 자동 직렬화 불가능
+
+</aside>
+
+<aside>
+📌
+
+성공 후 세션 구조
+
+HttpSession
+├─ SPRING_SECURITY_CONTEXT
+│   └─ Authentication
+│       └─ principal = CustomUserDetails
+├─ userId
+└─ userName
+
+</aside>
+
+<aside>
+📌
+
+UserDetailService
+→ DB에서 User 엔티티를 조회한다.
+→ 조회한 User를 CustomUserDetails로 감싸서 반환한다.
+
+CustomUserDetails
+→ User 엔티티를 Spring Security가 이해할 수 있는 UserDetails 형태로 변환한다.
+→ username, password, authorities, 계정 상태를 제공한다.
+
+</aside>
+
+## CSRF (Cross-Site Request Forgery, 사이트 간 요청 위조)
+
+사용자가 로그인한 상태를 악용해서 사용자가 원하지 않은 요청을 보내게 만드는 공격
+
+공격이 성립하는 이유 : 브라우저는 요청이 "어느 사이트에서 시작됐든" 대상 서버의 쿠키(JSESSIONID)를 자동으로 붙인다.
+
+1. 사용자가 우리 사이트에 로그인한 상태 (JSESSIONID 쿠키 보유)
+2. 공격자 페이지 (evil.com) 방문→ 숨겨진 form이 우리 서버로 POST 자동 제출 (비밀번호 변경, 송금 등 상태 변경 요청)
+3. 브라우저가 JSESSIONID를 자동으로 실어 보냄→ 서버는 정상 사용자의 요청과 구분 불가
+
+#### Spring Security의 방어, CSRF 토큰 이용 (기본 켜짐)
+
+서버가 세션마다 예측 불가능한 CSRF 토큰 발급
+→ 정상 페이지/폼/AJAX 요청에는 토큰 포함
+→ POST/PUT/DELETE 요청 시 토큰 검사
+→ 토큰 없거나 틀리면 403
+
+공격자 사이트는 Same-Origin Policy 때문에 우리 페이지에 심어진 토큰을 읽을 수 없어 요청이 403으로 거부된다.
+(로그아웃도 POST + 토큰을 요구하는 이유= 강제 로그아웃 공격 방지)
+
+#### 예제에서 끈 이유 - `.csrf( AbstractHttpConfigurer::disable )`
+
+켜면 signUp.js/signIn.js AJAX에 토큰을 실어야 해서 (X-CSRF-TOKEN헤더 등)
+
+인증 흐름 학습에 집중하기 위해 비활성화하였음
+
+실서비스에서 **세션 기반 로그인**을 쓴다면 보통 CSRF를 켜고, 프론트에서 `X-CSRF-TOKEN` 같은 헤더로 토큰을 같이 보내는 방식이 더 안전
+
+## AJAX (Asynchronous JavaScript And XML)
+
+**페이지 전체를 새로고침하지 않고, JavaScript로 서버에 요청을 보내고 응답을 받아오는 방식**
+
+- 기본 HTML form 제출 방식 
+- 브라우저가 요청/받은 응답 처리
+- 성공/실패 후 보통 redirect (페이지 전체 이동)
+
+<aside>
+🔗
+
+사용자가 로그인 버튼 클릭
+→ 브라우저가 POST /users/login 요청
+→ 서버가 응답
+→ 브라우저가 페이지 전체 이동 또는 새로고침
+
+</aside>
+
+- AJAX 방식 
+- JavaScript가 대신 요청
+- JSON으로 응답 받아 화면 일부를 처리
+
+<aside>
+🔗
+
+사용자가 로그인 버튼 클릭
+→ JavaScript가 fetch()로 POST /users/login 요청
+→ 서버가 JSON 응답
+→ JavaScript가 응답을 보고 화면 처리
+
+</aside>
+
+#### + 과제 명세서 추가내용
+
+| **주소** | **하는 일** | **누가 처리?** | **접근** |
+| --- | --- | --- | --- |
+| `GET /users/join` | 회원가입 화면 | 컨트롤러 | 개방 |
+| `POST /api/users/join` | 회원가입 API (JSON) | 컨트롤러 + 서비스 | 개방 |
+| `GET /users/login` | 로그인 화면 | 컨트롤러 | 개방 |
+| `POST /users/login` | 로그인 처리 | **필터** (컨트롤러 없음!) | 개방 |
+| `GET /` | 홈 — "OO님 환영합니다" | 컨트롤러 | **로그인 필요** |
+| `GET /users/logout` | 로그아웃 | **필터** (컨트롤러 없음!) | 개방 |
+
+**흐름 예시**: 로그인 안 하고 `/` 접근 → `/users/login`으로 리다이렉트 → 로그인 성공 → `alert("로그인 성공")` → 홈에서 `김개발님 환영합니다` → 로그아웃 → 다시 로그인 페이지.
+
+### **(1) HTTP Basic vs 폼 로그인 — 뭐가 달라졌나**
+
+| **구분** | **HTTP Basic (지난 과제)** | **폼 로그인 (이번)** |
+| --- | --- | --- |
+| 로그인 화면 | 브라우저 기본 팝업 | **우리가 만든 HTML** |
+| 자격증명 전달 | 매 요청 `Authorization` 헤더 | **최초 1회만** 요청 본문(파라미터) |
+| 상태 | stateless (서버가 기억 안 함) | **stateful** — 세션 + JSESSIONID 쿠키 |
+| 로그인 유지의 주인 | 브라우저(자격증명 캐싱) | **서버**(세션) |
+| 로그아웃 | 사실상 불가 | **가능** (세션 무효화) |
+
+### **(2) 인증 흐름 — 필터가 가로채고, 우리는 두 조각만 끼운다**
+
+```
+POST /users/login (userId=kim&password=1234)
+  → UsernamePasswordAuthenticationFilter  (loginProcessingUrl 가로챔, 미인증 토큰 생성)
+  → AuthenticationManager (ProviderManager)
+  → DaoAuthenticationProvider
+       ├─ UserDetailsService.loadUserByUsername()  ← ★ 우리가 구현 (DB 조회)
+       └─ PasswordEncoder.matches(입력값, DB 해시)  ← ★ 우리가 빈 등록 (BCrypt)
+  → 성공: SecurityContext에 저장 → HttpSession에 보관 → JSESSIONID 쿠키 발급
+         → AuthenticationSuccessHandler  ← ★ 우리가 교체 (JSON 응답)
+  → 실패: AuthenticationFailureHandler   ← ★ 우리가 교체 (401 JSON)
+```
+
+전체 파이프라인은 시큐리티가 굴리고, 우리는 **★ 지점만** 구현해요. HTTP Basic 때와 검증부(3~4행)는 완전히 같아요 — 입구(팝업→폼)와 출구(무상태→세션)만 바뀐 거예요.
+
+### **(3) BCrypt — 비밀번호는 절대 평문으로 저장하지 않는다**
+
+- 회원가입: `encode("1234")` → `$2a$10$N9qo8uLO...` (60자 해시, **같은 비밀번호도 매번 다른 해시**)
+- 로그인: `matches("1234", 저장된해시)` → 해시를 복호화하는 게 아니라, **다시 계산해서 맞는지만** 확인
+- 그래서 DB가 유출돼도 원래 비밀번호를 바로 알 수 없어요. 회원가입 때 `encode`를 빼먹으면(평문 저장) 로그인이 **항상 실패**해요 — matches가 "이건 BCrypt 해시가 아닌데?" 하니까요.
+
+### **(4) 이후 요청은 세션으로 — stateful**
+
+로그인 성공 후에는 아이디/비밀번호를 다시 보내지 않아요. 브라우저가 `JSESSIONID` 쿠키를 자동 전송하고, 서버가 그걸로 세션을 찾아 `SecurityContext`를 복원해요(`SecurityContextHolderFilter`). **로그인 상태의 주인이 서버**라서, 세션을 무효화하면(로그아웃) 진짜로 풀려요. 서버를 재시작해도 풀려요 — Basic과 정반대죠.
+
+### **(5) CSRF — 왜 끄고 시작하나**
+
+CSRF는 "브라우저가 쿠키를 **자동으로** 실어 보내는" 성질을 악용해, 로그인된 사용자의 브라우저로 의도하지 않은 요청(송금, 비밀번호 변경…)을 보내게 하는 공격이에요. 시큐리티는 기본으로 **세션마다 토큰을 발급**해 POST 요청마다 검사해요(막히면 403). 켜두면 우리 AJAX마다 토큰을 실어야 해서, **인증 흐름 학습에 집중하려고 이번엔 꺼요.** 실서비스(세션 방식)라면 켜는 게 원칙이에요. 다음 수업 예고: JWT를 `Authorization` 헤더로 보내는 방식은 "쿠키 자동 전송"이 없어서 CSRF가 원천적으로 성립하지 않아요 — 대신 XSS라는 다른 위협이 부각돼요.
+
+```
+[기억법] 로그인은 form-urlencoded(필터는 파라미터만) / 비번은 encode로 저장·matches로 대조 / 세션이 주인이라 로그아웃 가능
+```
