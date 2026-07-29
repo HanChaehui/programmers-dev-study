@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/signUp.css}" rel="stylesheet">
+    <title>홈</title>
+</head>
+<body>
+
+<div class="signup-container">
+    <h2 th:text="|${session.userName}님 환영합니다|">환영합니다</h2>
+    <a href="/users/logout">로그아웃</a>
+</div>
+
+</body>
+</html>

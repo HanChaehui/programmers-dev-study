@@ -1,3 +1,8 @@
 spring:
   application:
     name: Security-2-FormLogin
+  datasource:
+    url: jdbc:mysql://localhost:3306/java_basic?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: sang1411
