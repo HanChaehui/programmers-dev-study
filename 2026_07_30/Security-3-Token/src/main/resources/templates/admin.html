@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+    <link th:href="@{/css/hello.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="hello-container">
+    <h1>관리자 페이지</h1>
+
+    <!-- 권한 확인 전에는 내용을 숨겨둔다. /api/users/admin 호출이 성공해야 보인다 -->
+    <div id="admin-content" style="display: none;">
+        <div class="user-info">
+            <p><span class="label">확인 결과</span> <span id="admin-message"></span></p>
+        </div>
+
+        <button id="go-main" type="button" onclick="location.href='/'">메인으로</button>
+    </div>
+</div>
+
+</body>
+</html>
