@@ -23,7 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-spring security6'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'  // JWT API
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'    // JWT 구현체
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0' // JSON 처리를 위한 Jackson 모듈
