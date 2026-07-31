@@ -1,4 +1,4 @@
-package com.example.spring.security3token.util;
+package com.example.spring.boardtoken.util;
 
 import java.security.SecureRandom;
 import java.util.Base64;
