@@ -16,6 +16,7 @@ public class TokenService {
 
     private final TokenProvider tokenProvider;
     private final JwtProperties jwtProperties;
+
     public record TokenPair(String accessToken, String refreshToken) {}
 
     public TokenPair issueToken(User user) {

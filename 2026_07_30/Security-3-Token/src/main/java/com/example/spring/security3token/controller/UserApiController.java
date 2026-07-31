@@ -74,7 +74,7 @@ public class UserApiController {
     @GetMapping("/user")
     public AuthorityResponseDto authority() {
         return AuthorityResponseDto.builder()
-                .message("일반 사용자만 볼 수 있는 권합니다.")
+                .message("일반 사용자만 볼 수 있는 권한입니다.")
                 .build();
     }
 
@@ -82,7 +82,7 @@ public class UserApiController {
     @GetMapping("/admin")
     public AuthorityResponseDto authorityAdmin() {
         return AuthorityResponseDto.builder()
-                .message("관리자만 볼 수 있는 권합니다.")
+                .message("관리자만 볼 수 있는 권한입니다.")
                 .build();
     }
 }

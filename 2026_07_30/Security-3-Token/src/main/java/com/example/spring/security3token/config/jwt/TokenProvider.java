@@ -40,7 +40,7 @@ public class TokenProvider {
         this.jwtParser = Jwts.parser().verifyWith(secretKey).build();
     }
 
-    public String makeToken(User user, Date expire) {
+    private String makeToken(User user, Date expire) {
         return Jwts.builder()
                 .header().type("JWT").and()
                 .issuer(jwtProperties.getIssuer())
@@ -73,7 +73,7 @@ public class TokenProvider {
         }
     }
 
-    public Claims getClaims(String token) {
+    private Claims getClaims(String token) {
         return jwtParser.parseSignedClaims(token).getPayload();
     }
 
