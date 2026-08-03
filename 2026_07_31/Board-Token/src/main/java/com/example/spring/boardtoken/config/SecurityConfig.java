@@ -56,6 +56,8 @@ public class SecurityConfig {
                                 "/api/users/logout",
                                 "/api/tokens/refresh",
 
+                                "/api/boards/file/download/**",
+
                                 "/css/**",
                                 "/js/**",
                                 "/access-denied",

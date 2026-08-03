@@ -36,21 +36,25 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
     private static final QUser user = QUser.user;
 
     @Override
-    public Page<BoardListItemResponseDto> searchBoards(BoardSearchRequestDto condition, Pageable pageable) {
-
-        List<BoardListItemResponseDto> content = queryFactory.select(
+    public Page<BoardListItemResponseDto> searchBoards(
+            BoardSearchRequestDto condition,
+            Pageable pageable
+    ) {
+        List<BoardListItemResponseDto> content = queryFactory
+                .select(
                         Projections.constructor(
                                 BoardListItemResponseDto.class,
                                 board.id,
                                 board.title,
                                 board.userId,
-                                user.userName,
-                                commentCountOf(board), // 서브쿼리
+                                user.name,
+                                commentCountOf(board),
                                 board.created
                         )
                 )
                 .from(board)
-                .leftJoin(user).on(board.userId.eq(user.userId))
+                .leftJoin(user)
+                .on(board.userId.eq(user.userId))
                 .where(
                         titleContains(condition.getTitle()),
                         userIdEquals(condition.getUserId()),
@@ -62,7 +66,6 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        // 전체 개수 쿼리
         JPAQuery<Long> countQuery = queryFactory
                 .select(board.count())
                 .from(board)
@@ -73,14 +76,19 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                         createdLoe(condition.getTo())
                 );
 
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(
+                content,
+                pageable,
+                countQuery::fetchOne
+        );
     }
 
     @Override
     public Optional<Board> findWithComments(Long id) {
         Board result = queryFactory
                 .selectFrom(board)
-                .leftJoin(board.comments, comment).fetchJoin()
+                .leftJoin(board.comments, comment)
+                .fetchJoin()
                 .where(board.id.eq(id))
                 .fetchOne();
 
@@ -88,37 +96,51 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
     }
 
     @Override
-    public List<BoardAuthorStatsResponseDto> countBoardsByAuthor(long minCount) {
+    public List<BoardAuthorStatsResponseDto> countBoardsByAuthor(
+            long minCount
+    ) {
         return queryFactory
-                .select(new QBoardAuthorStatsResponseDto(
-                        board.userId,
-                        user.userName,
-                        board.count()
-                ))
+                .select(
+                        new QBoardAuthorStatsResponseDto(
+                                board.userId,
+                                user.name,
+                                board.count()
+                        )
+                )
                 .from(board)
-                .leftJoin(user).on(board.userId.eq(user.userId))
-                .groupBy(board.userId, user.userName)
+                .leftJoin(user)
+                .on(board.userId.eq(user.userId))
+                .groupBy(
+                        board.userId,
+                        user.name
+                )
                 .having(board.count().goe(minCount))
                 .orderBy(board.count().desc())
                 .fetch();
     }
 
-    // 제목 부분 일치 (Like %title%). 빈 값이면 조건 없음(null)
     private BooleanExpression titleContains(String title) {
-        return (title == null || title.isBlank()) ? null : board.title.contains(title);
+        return title == null || title.isBlank()
+                ? null
+                : board.title.contains(title);
     }
 
-    // 작성자 아이디 정확히 일치. 빈 값이면 조건 없음(null)
     private BooleanExpression userIdEquals(String userId) {
-        return (userId == null || userId.isBlank()) ? null : board.userId.eq(userId);
+        return userId == null || userId.isBlank()
+                ? null
+                : board.userId.eq(userId);
     }
 
     private BooleanExpression createdGoe(LocalDate from) {
-        return from == null ? null : board.created.goe(from.atStartOfDay());
+        return from == null
+                ? null
+                : board.created.goe(from.atStartOfDay());
     }
 
     private BooleanExpression createdLoe(LocalDate to) {
-        return to == null ? null : board.created.loe(to.atTime(LocalTime.MAX));
+        return to == null
+                ? null
+                : board.created.loe(to.atTime(LocalTime.MAX));
     }
 
     private Expression<Long> commentCountOf(QBoard board) {
@@ -127,5 +149,4 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .from(comment)
                 .where(comment.board.id.eq(board.id));
     }
-
 }

@@ -20,13 +20,22 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
+    @Column(
+            nullable = false,
+            length = 200
+    )
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String content;
 
-    @Column(nullable = false, length = 50)
+    @Column(
+            nullable = false,
+            length = 50
+    )
     private String userId;
 
     @Column(length = 255)
@@ -35,10 +44,19 @@ public class Board {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime created;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(
+            mappedBy = "board",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
-    public void update(String title, String content, String filePath) {
+    public void update(
+            String title,
+            String content,
+            String filePath
+    ) {
         this.title = title;
         this.content = content;
         this.filePath = filePath;

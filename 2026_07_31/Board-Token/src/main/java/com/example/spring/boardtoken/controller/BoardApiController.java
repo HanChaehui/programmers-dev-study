@@ -1,5 +1,8 @@
 package com.example.spring.boardtoken.controller;
 
+
+import com.example.spring.boardtoken.config.security.CustomUserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import com.example.spring.boardtoken.domain.entity.Board;
 import com.example.spring.boardtoken.dto.*;
 import com.example.spring.boardtoken.mapper.BoardMapper;
@@ -67,11 +70,21 @@ public class BoardApiController {
                 .build();
     }
 
-    @Operation(summary = "게시글 작성",
-            description = "제목/내용/작성자와 (선택적) 첨부파일을 multipart/form-data 로 받아 새 게시글을 저장한다.")
-    @PostMapping( consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
-    public void saveBoard(@ModelAttribute BoardWriteRequestDto dto) {
-        boardService.saveBoard(dto.getUserId(), dto.getTitle(), dto.getContent(), dto.getFile());
+    @Operation(
+            summary = "게시글 작성",
+            description = "로그인 사용자가 제목, 내용, 첨부파일을 입력하여 게시글을 작성한다."
+    )
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void saveBoard(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @ModelAttribute BoardWriteRequestDto dto
+    ) {
+        boardService.saveBoard(
+                userDetails.getUsername(),
+                dto.getTitle(),
+                dto.getContent(),
+                dto.getFile()
+        );
     }
 
     @Operation( summary = "게시글 상세 조회", description = "id로 게시글 한 건의 상세 내용을 조회한다." )
@@ -121,36 +134,53 @@ public class BoardApiController {
                 .body(resource);
     }
 
-    @Operation(summary = "게시글 수정",
-            description = "경로의 id 게시글을 수정한다. 파일 교체가 가능하도록 multipart/form-data 로 받는다.")
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "게시글 수정",
+            description = "로그인한 작성자 본인의 게시글만 수정할 수 있다."
+    )
+    @PutMapping(
+            value = "/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public void updateBoard(
-            @Parameter(description = "수정할 게시글 id", example = "1")
+            @Parameter(
+                    description = "수정할 게시글 ID",
+                    example = "1"
+            )
             @PathVariable long id,
-            @ModelAttribute BoardUpdateRequestDto dto) {
-        System.out.println("===== 수정 API 도착 =====");
-        System.out.println("id = " + id);
-        System.out.println("title = " + dto.getTitle());
-        System.out.println("content = " + dto.getContent());
-        System.out.println("fileFlag = " + dto.isFileFlag());
-        System.out.println("file = " + dto.getFile());
 
-        if (dto.getFile() != null) {
-            System.out.println("file empty = " + dto.getFile().isEmpty());
-            System.out.println("file name = " + dto.getFile().getOriginalFilename());
-        }
-        boardService.updateBoard(id, dto);
+            @AuthenticationPrincipal
+            CustomUserDetails userDetails,
+
+            @ModelAttribute
+            BoardUpdateRequestDto dto
+    ) {
+        boardService.updateBoard(
+                id,
+                userDetails.getUsername(),
+                dto
+        );
     }
 
-    @Operation(summary = "게시글 삭제",
-            description = "경로의 id 게시글을 삭제한다. 첨부파일 경로(filePath)를 JSON 본문으로 함께 받아 파일도 정리한다.")
+    @Operation(
+            summary = "게시글 삭제",
+            description = "로그인한 작성자 본인의 게시글만 삭제할 수 있다."
+    )
     @DeleteMapping("/{id}")
     public void deleteBoard(
-            @Parameter(description = "삭제할 게시글 id", example = "1")
+            @Parameter(
+                    description = "삭제할 게시글 ID",
+                    example = "1"
+            )
             @PathVariable long id,
-            @RequestBody BoardDeleteRequestDto dto
+
+            @AuthenticationPrincipal
+            CustomUserDetails userDetails
     ) {
-        boardService.deleteBoard(id, dto);
+        boardService.deleteBoard(
+                id,
+                userDetails.getUsername()
+        );
     }
 
     @Operation(

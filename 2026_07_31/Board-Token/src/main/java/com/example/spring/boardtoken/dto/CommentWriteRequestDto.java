@@ -10,10 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentWriteRequestDto {
 
-    @Schema(description = "댓글 작성자 아이디", example = "hong")
-    private String userId;
-
-    @Schema(description = "댓글 내용", example = "좋은 글 감사합니다.")
+    @Schema(
+            description = "댓글 내용",
+            example = "좋은 글 감사합니다."
+    )
     private String content;
-
 }

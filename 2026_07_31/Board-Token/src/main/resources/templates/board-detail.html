@@ -3,24 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            crossorigin="anonymous"></script>
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/boardDetail.js}"></script>
+
     <link th:href="@{/css/boardDetail.css}" rel="stylesheet">
+
     <title>게시글 상세보기</title>
 </head>
 <body>
+
 <div class="container">
-    <input id="hiddenId" type="hidden" th:value="${id}">
-    <input id="hiddenUserId" type="hidden" th:value="${userId}">
-    <input id="hiddenUserName" type="hidden" th:value="${userName}">
-    <input id="hiddenFilePath" type="hidden">
+    <input id="hiddenId"
+           type="hidden"
+           th:value="${id}">
 
     <div class="article-header">
         <h1 id="title">게시글 제목</h1>
+
         <div class="article-info">
-            <span>작성자: <strong id="userId"></strong></span> |
-            <span>작성일: <strong id="created"></strong></span>
+            <span>
+                작성자:
+                <strong id="userId"></strong>
+            </span>
+
+            |
+
+            <span>
+                작성일:
+                <strong id="created"></strong>
+            </span>
         </div>
     </div>
 
@@ -28,38 +42,55 @@
         <p id="content">게시글 내용</p>
     </div>
 
-    <!-- 파일 미리보기 및 다운로드 영역 -->
     <div class="file-section">
         <h3>첨부 파일</h3>
-        <ul id="fileList">
-            <!-- 서버에서 파일 목록을 동적으로 추가 -->
-        </ul>
+        <ul id="fileList"></ul>
     </div>
 
     <div class="article-footer">
-        <button class="btn" th:onclick="|location.href='@{/}'|">목록으로 돌아가기</button>
-        <button id="editBtn" onclick="editArticle()" class="btn edit-btn">수정</button>
-        <button id="deleteBtn" onclick="deleteArticle()" class="btn delete-btn">삭제</button>
+        <button class="btn"
+                th:onclick="|location.href='@{/}'|">
+            목록으로 돌아가기
+        </button>
+
+        <button id="editBtn"
+                type="button"
+                onclick="editArticle()"
+                class="btn edit-btn">
+            수정
+        </button>
+
+        <button id="deleteBtn"
+                type="button"
+                onclick="deleteArticle()"
+                class="btn delete-btn">
+            삭제
+        </button>
     </div>
 
-    <!-- =====================================================================
-         댓글 영역
-         - 목록: GET /api/boards/{id}/with-comments (fetch join) 응답의 comments 를 그린다
-         - 작성: POST /api/boards/{id}/comments 로 저장 후 목록을 다시 그린다
-         - 작성자는 로그인 세션의 아이디(hiddenUserId)를 그대로 쓴다 (별도 입력 없음)
-         ===================================================================== -->
     <div class="comment-section">
-        <h3>댓글 <span id="commentCount" class="comment-total"></span></h3>
+        <h3>
+            댓글
+            <span id="commentCount"
+                  class="comment-total"></span>
+        </h3>
 
-        <!-- 댓글 목록 - boardDetail.js 의 renderComments() 가 동적으로 채운다 -->
         <ul id="commentList"></ul>
 
-        <!-- 댓글 작성 폼 -->
         <div class="comment-form">
-            <textarea id="commentContent" rows="3" placeholder="댓글을 입력하세요"></textarea>
-            <button id="commentSubmitBtn" class="btn" type="button" onclick="submitComment()">댓글 등록</button>
+            <textarea id="commentContent"
+                      rows="3"
+                      placeholder="댓글을 입력하세요"></textarea>
+
+            <button id="commentSubmitBtn"
+                    class="btn"
+                    type="button"
+                    onclick="submitComment()">
+                댓글 등록
+            </button>
         </div>
     </div>
 </div>
+
 </body>
 </html>

@@ -23,20 +23,32 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void addComment(Long boardId, CommentWriteRequestDto dto) {
-
+    public void addComment(
+            Long boardId,
+            String userId,
+            CommentWriteRequestDto dto
+    ) {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new BoardNotFoundException("게시글을 찾을 수 없습니다. id = " + boardId));
+                .orElseThrow(
+                        () -> new BoardNotFoundException(
+                                "게시글을 찾을 수 없습니다. id = " + boardId
+                        )
+                );
 
         Comment comment = Comment.builder()
                 .content(dto.getContent())
-                .userId(dto.getUserId())
+                .userId(userId)
                 .board(board)
                 .created(LocalDateTime.now())
                 .build();
 
         commentRepository.save(comment);
-        log.info("댓글 등록 : commentId = {}, boardId = {}, userId = {}", comment.getId(), boardId, dto.getUserId());
-    }
 
+        log.info(
+                "댓글 등록 : commentId = {}, boardId = {}, userId = {}",
+                comment.getId(),
+                boardId,
+                userId
+        );
+    }
 }

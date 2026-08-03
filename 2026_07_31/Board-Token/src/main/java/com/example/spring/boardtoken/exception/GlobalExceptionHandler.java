@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
+import java.nio.file.AccessDeniedException;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,6 +31,29 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(
                         new ErrorResponseDto(HttpStatus.NOT_FOUND.value(), e.getMessage())
+                );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDto> authenticationException(AuthenticationException e) {
+        log.warn("401 응답 : 로그인 실패");
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(
+                        new ErrorResponseDto(
+                                HttpStatus.UNAUTHORIZED.value(),
+                                "아이디 또는 비밀번호가 올바르지 않습니다."
+                        )
+                );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDto> accessDeniedException(AccessDeniedException e) {
+        log.warn("403 응답 : {}", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(
+                        new ErrorResponseDto(HttpStatus.FORBIDDEN.value(), e.getMessage())
                 );
     }
 
