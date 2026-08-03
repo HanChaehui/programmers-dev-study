@@ -45,6 +45,7 @@ public class SecurityConfig {
                                 "/admin",
                                 "/users/join",
                                 "/users/login",
+                                "/api/users/logout",
                                 "/api/users/join",
                                 "/api/users/login",
                                 "/api/tokens/refresh",
