@@ -21,11 +21,11 @@
     <a th:href="@{/write}" class="btn">글쓰기</a>
     <a th:href="@{/stats}" class="btn">작성자 통계</a>
 
-    <button type="button"
-            class="btn logout-btn logout-btn-position"
-            onclick="logout()">
+    <a href="#"
+       class="btn logout-btn logout-btn-position"
+       onclick="logout(); return false;">
         로그아웃
-    </button>
+    </a>
 
     <div id="searchForm">
         <input id="searchTitle"

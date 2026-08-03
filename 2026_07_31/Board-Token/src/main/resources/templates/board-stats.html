@@ -18,20 +18,16 @@
 <div class="container">
     <h1>작성자별 게시글 통계</h1>
 
-    <a th:href="@{/}" class="btn">
-        목록으로
+    <a th:href="@{/}" class="btn">목록으로</a>
+
+    <a href="#"
+       class="btn logout-btn logout-btn-position"
+       onclick="logout(); return false;">
+        로그아웃
     </a>
 
-    <button type="button"
-            class="btn logout-btn logout-btn-position"
-            onclick="logout()">
-        로그아웃
-    </button>
-
     <div id="filterForm">
-        <label for="minCount">
-            최소 게시글 수
-        </label>
+        <label for="minCount">최소 게시글 수</label>
 
         <input id="minCount"
                type="number"

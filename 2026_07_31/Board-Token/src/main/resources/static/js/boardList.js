@@ -41,21 +41,10 @@ let getSearchCondition = () => {
     const from = $('#searchFrom').val();
     const to = $('#searchTo').val();
 
-    if (title) {
-        condition.title = title;
-    }
-
-    if (userId) {
-        condition.userId = userId;
-    }
-
-    if (from) {
-        condition.from = from;
-    }
-
-    if (to) {
-        condition.to = to;
-    }
+    if (title) condition.title = title;
+    if (userId) condition.userId = userId;
+    if (from) condition.from = from;
+    if (to) condition.to = to;
 
     return condition;
 };
@@ -73,7 +62,7 @@ let loadBoard = (page) => {
             renderBoards(response.content);
             renderPagination(page, response.totalPages);
         },
-        error: (error) => {
+        error: function (error) {
             console.error('오류 발생:', error);
             alert('게시판 데이터를 불러오는데 오류가 발생했습니다.');
         }
@@ -85,14 +74,14 @@ let renderBoards = (boards) => {
 
     $content.empty();
 
-    if (boards == null || boards.length === 0) {
-        $content.append(`
-            <tr>
+    if (boards == null || boards.length <= 0) {
+        $content.append(
+            `<tr>
                 <td colspan="5" style="text-align: center;">
                     글이 존재하지 않습니다.
                 </td>
-            </tr>
-        `);
+            </tr>`
+        );
 
         return;
     }
@@ -106,8 +95,8 @@ let renderBoards = (boards) => {
             ? `<span class="comment-count">${item.commentCount}</span>`
             : '-';
 
-        $content.append(`
-            <tr>
+        $content.append(
+            `<tr>
                 <td>${item.id}</td>
                 <td>
                     <a href="/detail?id=${item.id}">
@@ -117,8 +106,8 @@ let renderBoards = (boards) => {
                 <td>${author}</td>
                 <td>${commentBadge}</td>
                 <td>${item.created}</td>
-            </tr>
-        `);
+            </tr>`
+        );
     });
 };
 
