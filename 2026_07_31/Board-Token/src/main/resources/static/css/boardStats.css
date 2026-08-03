@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 700px;
+    position: relative;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* 필터 영역 - 목록 화면의 검색 폼과 같은 결 */
+#filterForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+#filterForm label {
+    color: #666;
+    font-size: 0.95em;
+}
+
+#filterForm input {
+    width: 80px;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#filterForm .btn {
+    margin: 0; /* .btn 의 기본 좌우 마진 제거 (gap 으로 간격을 잡으므로) */
+}
+
+#stats {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 10px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover:not(:disabled) {
+    background-color: #45a049;
+}
+
+/* 로그아웃 버튼 스타일 (목록 화면과 동일) */
+.logout-btn {
+    background-color: #dc3545;
+}
+
+.logout-btn-position {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
+/* 게시글 수 배지 - 목록 화면의 댓글 수 배지(.comment-count)와 같은 초록 톤 */
+.board-count {
+    display: inline-block;
+    min-width: 22px;
+    padding: 2px 8px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+/* 순위 배지 - 1~3위 강조 (금/은/동) */
+.rank-badge {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.rank-1 { background-color: #f1c40f; } /* 금 */
+.rank-2 { background-color: #95a5a6; } /* 은 */
+.rank-3 { background-color: #cd7f32; } /* 동 */

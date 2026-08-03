@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.hello-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.user-info {
+    margin-bottom: 15px;
+}
+
+.user-info p {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 0 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.user-info .label {
+    font-weight: bold;
+    color: #333;
+}
+
+.authority-test {
+    margin-bottom: 15px;
+}
+
+.authority-test button {
+    width: calc(50% - 4px);
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #4CAF50;
+    color: #4CAF50;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.authority-test button:hover {
+    background-color: #f0f8f0;
+}
+
+#authority-result {
+    text-align: center;
+    font-size: 0.9em;
+    min-height: 1.2em;
+    margin: 10px 0 0;
+}
+
+#admin-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #4CAF50;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+#admin-link:hover {
+    text-decoration: underline;
+}
+
+#go-main,
+#logout {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logout:hover {
+    background-color: #45a049;
+}

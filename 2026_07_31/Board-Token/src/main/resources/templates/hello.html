@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/hello.js}"></script>
+    <link th:href="@{/css/hello.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="hello-container">
+    <h1>Hello World!</h1>
+
+    <div class="user-info">
+        <p><span class="label">이름</span> <span id="user-name"></span></p>
+        <p><span class="label">아이디</span> <span id="user-id"></span></p>
+        <p><span class="label">권한</span> <span id="user-role"></span></p>
+    </div>
+
+    <div class="authority-test">
+        <button id="call-user" type="button">일반 사용자 API</button>
+        <button id="call-admin" type="button">관리자 API</button>
+        <p id="authority-result"></p>
+    </div>
+
+    <!-- ROLE_ADMIN으로 로그인했을 때만 hello.js가 보여준다 -->
+    <a id="admin-link" href="/admin" style="display: none;">관리자 페이지 →</a>
+
+    <button id="logout" type="button">로그아웃</button>
+</div>
+
+</body>
+</html>

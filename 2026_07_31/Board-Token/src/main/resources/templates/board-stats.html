@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/boardStats.js}"></script>
+    <link th:href="@{/css/boardStats.css}" rel="stylesheet">
+    <title>작성자 통계</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>작성자별 게시글 통계</h1>
+    <input id="hiddenUserId" type="hidden" th:value="${userId}">
+
+    <a th:href="@{/}" class="btn">목록으로</a>
+    <a th:href="@{/members/logout}" class="btn logout-btn logout-btn-position">로그아웃</a>
+
+    <!-- =====================================================================
+         필터 영역 - minCount(최소 게시글 수)를 서버의 having 조건으로 넘긴다
+         - 예) 3을 넣으면 "3편 이상 쓴 작성자"만 표에 남는다
+         ===================================================================== -->
+    <div id="filterForm">
+        <label for="minCount">최소 게시글 수</label>
+        <input id="minCount" type="number" min="1" value="1">
+        <button id="applyBtn" class="btn" type="button">적용</button>
+    </div>
+
+    <!-- 통계 표 - boardStats.js 가 GET /api/boards/stats/authors 응답으로 채운다 -->
+    <div id="stats">
+        <table>
+            <thead>
+            <tr>
+                <th>순위</th>
+                <th>작성자</th>
+                <th>게시글 수</th>
+            </tr>
+            </thead>
+            <tbody id="statsContent">
+            <!-- Ajax를 통해 통계 데이터가 여기에 동적으로 추가됨 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
